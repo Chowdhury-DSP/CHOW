@@ -24,16 +24,16 @@ ChowAudioProcessor::ChowAudioProcessor()
                        )
 #endif
 {
-    addParameter (thresh = new AudioParameterFloat (String ("thresh"), String ("Threshold"),
+    addParameter (threshDB = new AudioParameterFloat (String ("thresh"), String ("Threshold"),
                                                     -100.0f, 0.0f, -27.0f));
     
     addParameter (ratio = new AudioParameterFloat (String ("ratio"), String ("Ratio"),
                                                    0.0f, 50.0f, 10.0f));
 
-    addParameter (inGaindB = new AudioParameterFloat (String ("inGaindB"), String ("Input Gain"),
+    addParameter (inGainDB = new AudioParameterFloat (String ("inGaindB"), String ("Input Gain"),
                                                       -30.0f, 6.0f, 0.0f));
 
-    addParameter (outGaindB = new AudioParameterFloat (String ("outGaindB"), String ("Output Gain"),
+    addParameter (outGainDB = new AudioParameterFloat (String ("outGaindB"), String ("Output Gain"),
                                                        -30.0f, 6.0f, 0.0f));
 }
 
@@ -143,7 +143,7 @@ float ChowAudioProcessor::chow (float x)
 {
     float y = x;
 
-    const float threshGain = Decibels::decibelsToGain (thresh->get());
+    const float threshGain = Decibels::decibelsToGain (threshDB->get());
     if (x > threshGain)
     {
         y = threshGain + ((x - threshGain) / ratio->get());
@@ -157,14 +157,14 @@ void ChowAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& /
 {
     ScopedNoDenormals noDenormals;
 
-    buffer.applyGain (Decibels::decibelsToGain (inGaindB->get()));
+    buffer.applyGain (Decibels::decibelsToGain (inGainDB->get()));
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
     {
         auto* x = buffer.getWritePointer (channel);
         for (int n = 0; n < buffer.getNumSamples(); n++)
             x[n] = chow (x[n]);
     }
-    buffer.applyGain (Decibels::decibelsToGain (outGaindB->get()));
+    buffer.applyGain (Decibels::decibelsToGain (outGainDB->get()));
 
     vis->pushBuffer (buffer.getArrayOfReadPointers(), 1, buffer.getNumSamples());
 }

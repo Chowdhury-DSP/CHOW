@@ -27,13 +27,28 @@ enum
 ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p), visualizer (*p.vis)
 {
-    //@TODO: clean up constructor
-    auto setupSlider = [this] (Slider& slide, AudioParameterFloat* param, String textSuffix = String (" dB"), float step = 0.1f)
+    initSliders();
+    initLabels();    
+    initVisualizer();    
+
+    setSize (400, 300);
+}
+
+ChowAudioProcessorEditor::~ChowAudioProcessorEditor()
+{
+}
+
+void ChowAudioProcessorEditor::initSliders()
+{
+    auto setupSlider = [this] (Slider& slide, AudioParameterFloat* param,
+                               float skewMidPoint = NAN, String textSuffix = String (" dB"), float step = 0.1f)
     {
         //@TODO: Custom slider LNF??
         slide.setName (param->name);
         slide.setRange (param->range.start, param->range.end, step);
-        
+        if (slide.getRange().contains (skewMidPoint))
+            slide.setSkewFactorFromMidPoint ((double) skewMidPoint);
+
         slide.setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
         slide.setColour (Slider::rotarySliderFillColourId, Colours::darkorange);
         slide.setColour (Slider::textBoxOutlineColourId, Colours::transparentBlack);
@@ -49,12 +64,14 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
         addAndMakeVisible (slide);
     };
 
-    //@TODO: add skew to some knobs
-    setupSlider (threshSlide, processor.thresh);
-    setupSlider (ratioSlide, processor.ratio, String (" : 1"));
-    setupSlider (inGainSlide, processor.inGaindB);
-    setupSlider (outGainSlide, processor.outGaindB);
+    setupSlider (threshSlide, processor.threshDB, -30.0f);
+    setupSlider (ratioSlide, processor.ratio, 15.0f, String (" : 1"));
+    setupSlider (inGainSlide, processor.inGainDB);
+    setupSlider (outGainSlide, processor.outGainDB);
+}
 
+void ChowAudioProcessorEditor::initLabels()
+{
     auto setupLabel = [this] (Label& label, AudioParameterFloat* param)
     {
         label.setText (param->name, dontSendNotification);
@@ -64,23 +81,20 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
         addAndMakeVisible (label);
     };
 
-    setupLabel (threshLabel, processor.thresh);
+    setupLabel (threshLabel, processor.threshDB);
     setupLabel (ratioLabel, processor.ratio);
-    setupLabel (inGainLabel, processor.inGaindB);
-    setupLabel (outGainLabel, processor.outGaindB);
+    setupLabel (inGainLabel, processor.inGainDB);
+    setupLabel (outGainLabel, processor.outGainDB);
+}
 
+void ChowAudioProcessorEditor::initVisualizer()
+{
     //@TODO: fine tune visualizer (override paint function?)
     visualizer.setRepaintRate (1000);
     visualizer.setBufferSize (128);
     visualizer.setSamplesPerBlock (processor.getBlockSize());
     visualizer.setColours (Colours::black, Colours::darkorange);
     addAndMakeVisible (visualizer);
-
-    setSize (400, 300);
-}
-
-ChowAudioProcessorEditor::~ChowAudioProcessorEditor()
-{
 }
 
 //==============================================================================
@@ -92,7 +106,7 @@ void ChowAudioProcessorEditor::paint (Graphics& g)
     g.setFont (Font (30.0f, Font::bold));
     g.drawFittedText ("CHOW", 0, 0, getWidth(), 30, Justification::centred, 1);
 
-    g.drawLine (0, visualizerY, getWidth(), visualizerY, 5.0f);
+    g.drawLine (0.0f, (float) visualizerY, (float) getWidth(), (float) visualizerY, 5.0f);
 }
 
 void ChowAudioProcessorEditor::resized()
@@ -115,14 +129,14 @@ void ChowAudioProcessorEditor::resized()
 
 AudioParameterFloat* ChowAudioProcessorEditor::getParamForSlider (Slider* slider)
 {
-    if (processor.thresh->name == slider->getName())
-        return processor.thresh;
+    if (processor.threshDB->name == slider->getName())
+        return processor.threshDB;
     else if (processor.ratio->name == slider->getName())
         return processor.ratio;
-    else if (processor.inGaindB->name == slider->getName())
-        return processor.inGaindB;
-    else if (processor.outGaindB->name == slider->getName())
-        return processor.outGaindB;
+    else if (processor.inGainDB->name == slider->getName())
+        return processor.inGainDB;
+    else if (processor.outGainDB->name == slider->getName())
+        return processor.outGainDB;
     else
         return nullptr;
 }
@@ -130,7 +144,7 @@ AudioParameterFloat* ChowAudioProcessorEditor::getParamForSlider (Slider* slider
 void ChowAudioProcessorEditor::sliderValueChanged (Slider* slider)
 {
     if (AudioParameterFloat* param = getParamForSlider(slider)){
-        *param = slider->getValue();
+        *param = (float) slider->getValue();
     }
 }
 

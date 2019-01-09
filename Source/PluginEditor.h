@@ -33,6 +33,10 @@ public:
     void sliderDragEnded (Slider* slider) override;
 
 private:
+    void initSliders();
+    void initLabels();
+    void initVisualizer();
+
     ChowAudioProcessor& processor;
 
     Slider threshSlide;
