@@ -56,10 +56,13 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    AudioParameterFloat* thresh;
+    AudioParameterFloat* thresh; //@TODO: rename threshDB
     AudioParameterFloat* ratio;
-    AudioParameterFloat* inGaindB;
-    AudioParameterFloat* outGaindB;
+    AudioParameterFloat* inGaindB; //@TODO: rename inGainDB
+    AudioParameterFloat* outGaindB; //@TODO: rename outGainDB
+
+    //@TODO: add parameter to flip rectifier direction
+    //@TODO: Dry wet param??
 
     AudioVisualiserComponent* vis = new AudioVisualiserComponent (1);
 

@@ -28,7 +28,7 @@ ChowAudioProcessor::ChowAudioProcessor()
                                                     -100.0f, 0.0f, -27.0f));
     
     addParameter (ratio = new AudioParameterFloat (String ("ratio"), String ("Ratio"),
-                                                   0.0f, 20.0f, 10.0f));
+                                                   0.0f, 50.0f, 10.0f));
 
     addParameter (inGaindB = new AudioParameterFloat (String ("inGaindB"), String ("Input Gain"),
                                                       -30.0f, 6.0f, 0.0f));
@@ -181,6 +181,7 @@ AudioProcessorEditor* ChowAudioProcessor::createEditor()
 }
 
 //==============================================================================
+//@TODO: save state info
 void ChowAudioProcessor::getStateInformation (MemoryBlock& /*destData*/)
 {
     // You should use this method to store your parameters in the memory block.

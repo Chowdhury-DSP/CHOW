@@ -27,7 +27,10 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
-    void sliderValueChanged (Slider* slider) override {}
+    AudioParameterFloat* getParamForSlider (Slider* slider);
+    void sliderValueChanged (Slider* slider) override;
+    void sliderDragStarted (Slider* slider) override;
+    void sliderDragEnded (Slider* slider) override;
 
 private:
     ChowAudioProcessor& processor;

@@ -27,8 +27,10 @@ enum
 ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p), visualizer (*p.vis)
 {
+    //@TODO: clean up constructor
     auto setupSlider = [this] (Slider& slide, AudioParameterFloat* param, String textSuffix = String (" dB"), float step = 0.1f)
     {
+        //@TODO: Custom slider LNF??
         slide.setName (param->name);
         slide.setRange (param->range.start, param->range.end, step);
         
@@ -47,6 +49,7 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
         addAndMakeVisible (slide);
     };
 
+    //@TODO: add skew to some knobs
     setupSlider (threshSlide, processor.thresh);
     setupSlider (ratioSlide, processor.ratio, String (" : 1"));
     setupSlider (inGainSlide, processor.inGaindB);
@@ -66,6 +69,7 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
     setupLabel (inGainLabel, processor.inGaindB);
     setupLabel (outGainLabel, processor.outGaindB);
 
+    //@TODO: fine tune visualizer (override paint function?)
     visualizer.setRepaintRate (1000);
     visualizer.setBufferSize (128);
     visualizer.setSamplesPerBlock (processor.getBlockSize());
@@ -107,4 +111,36 @@ void ChowAudioProcessorEditor::resized()
     auto bounds = getLocalBounds();
     bounds.removeFromTop (visualizerY);
     visualizer.setBounds (bounds);
+}
+
+AudioParameterFloat* ChowAudioProcessorEditor::getParamForSlider (Slider* slider)
+{
+    if (processor.thresh->name == slider->getName())
+        return processor.thresh;
+    else if (processor.ratio->name == slider->getName())
+        return processor.ratio;
+    else if (processor.inGaindB->name == slider->getName())
+        return processor.inGaindB;
+    else if (processor.outGaindB->name == slider->getName())
+        return processor.outGaindB;
+    else
+        return nullptr;
+}
+
+void ChowAudioProcessorEditor::sliderValueChanged (Slider* slider)
+{
+    if (AudioParameterFloat* param = getParamForSlider(slider)){
+        *param = slider->getValue();
+    }
+}
+
+void ChowAudioProcessorEditor::sliderDragStarted(Slider* slider){
+    if (AudioParameterFloat* param = getParamForSlider(slider))
+        param->beginChangeGesture();
+}
+
+void ChowAudioProcessorEditor::sliderDragEnded(Slider* slider){
+    if (AudioParameterFloat* param = getParamForSlider(slider))
+        param->endChangeGesture();
+
 }
