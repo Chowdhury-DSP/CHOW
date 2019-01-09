@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="zK0IVL" name="CHOW" projectType="audioplug" jucerVersion="5.4.1"
-              pluginFormats="buildAU,buildStandalone,buildVST3">
+              pluginFormats="buildAU,buildStandalone,buildVST,buildVST3">
   <MAINGROUP id="fvFmFA" name="CHOW">
     <GROUP id="{77BB85C6-10A2-D351-C891-0FA2413631C8}" name="Source">
       <FILE id="WQC7Z1" name="PluginProcessor.cpp" compile="1" resource="0"
