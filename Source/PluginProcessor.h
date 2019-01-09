@@ -63,7 +63,7 @@ public:
     AudioParameterBool* flip;
 
     //@MAYBELATER: Dry wet param??
-    //@TODO: attack/release stuff??
+    //@MAYBELATER: attack/release stuff??
 
     AudioVisualiserComponent* vis = new AudioVisualiserComponent (1);
 

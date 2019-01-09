@@ -12,24 +12,6 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-class MyLNF : public LookAndFeel_V4
-{
-public:
-    MyLNF()
-    {
-        setColour (ComboBox::outlineColourId, Colours::darkorange);
-    }
-
-    Font getTextButtonFont (TextButton& button, int buttonHeight) override
-    {
-        return LookAndFeel_V4::getTextButtonFont (button, buttonHeight).boldened();
-    }
-
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MyLNF)
-};
-
-//==============================================================================
 enum
 {
     width = 400,
@@ -53,8 +35,6 @@ enum
 ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p), visualizer (*p.vis)
 {
-    myLNF = new MyLNF;
-
     initSliders();
     initLabels();    
     initVisualizer();   
@@ -65,6 +45,7 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
 
 ChowAudioProcessorEditor::~ChowAudioProcessorEditor()
 {
+    flipButton.setLookAndFeel (nullptr);
 }
 
 void ChowAudioProcessorEditor::initSliders()
@@ -131,7 +112,7 @@ void ChowAudioProcessorEditor::initFlipButton()
     flipButton.setName (processor.flip->name);
     flipButton.setButtonText (flipButton.getName());
 
-    flipButton.setLookAndFeel (myLNF);
+    flipButton.setLookAndFeel (&myLNF);
     flipButton.setColour (TextButton::buttonOnColourId, Colours::darkorange);
     flipButton.setColour (TextButton::textColourOnId, Colours::black);
     flipButton.setColour (TextButton::buttonColourId, Colours::black);
