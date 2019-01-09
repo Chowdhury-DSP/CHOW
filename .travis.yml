@@ -13,12 +13,12 @@ matrix:
     - os: osx
       env:
         - BUILD_FOLDER="MacOSX"
-        - PROJUCER_EXPORT="$TRAVIS_BUILD_DIR/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer"
+        - PROJUCER="$TRAVIS_BUILD_DIR/JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer"
     - os: windows
       env:
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - BUILD_FOLDER="VisualStudio2017"
-        - PROJUCER_EXPORT="$TRAVIS_BUILD_DIR/JUCE/extras/Projucer/Builds/VisualStudio2017/x64/Debug/App/Projucer.exe"
+        - PROJUCER="$TRAVIS_BUILD_DIR/JUCE/extras/Projucer/Builds/VisualStudio2017/x64/Debug/App/Projucer.exe"
 
 before_install:
   # mac installs
@@ -34,8 +34,8 @@ before_install:
   
 script:
   - cd $TRAVIS_BUILD_DIR/
-  - export PROJUCER=$PROJUCER_EXPORT
   - $PROJUCER --set-global-search-path $TRAVIS_OS_NAME defaultJuceModulePath $TRAVIS_BUILD_DIR/JUCE/modules
+  - $PROJUCER --set-global-search-path $TRAVIS_OS_NAME vstLegacyPath $TRAVIS_BUILD_DIR/VST2_SDK
   - $PROJUCER --resave CHOW.jucer
   - cd $TRAVIS_BUILD_DIR/Builds/$BUILD_FOLDER/
   
