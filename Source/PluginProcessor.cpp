@@ -30,10 +30,10 @@ ChowAudioProcessor::ChowAudioProcessor()
     addParameter (ratio = new AudioParameterFloat (String ("ratio"), String ("Ratio"),
                                                    0.0f, 20.0f, 10.0f));
 
-    addParameter (inGaindB = new AudioParameterFloat (String ("inGaindB"), String ("Input Gain dB"),
+    addParameter (inGaindB = new AudioParameterFloat (String ("inGaindB"), String ("Input Gain"),
                                                       -30.0f, 6.0f, 0.0f));
 
-    addParameter (outGaindB = new AudioParameterFloat (String ("outGaindB"), String ("Output Gain dB"),
+    addParameter (outGaindB = new AudioParameterFloat (String ("outGaindB"), String ("Output Gain"),
                                                        -30.0f, 6.0f, 0.0f));
 }
 
