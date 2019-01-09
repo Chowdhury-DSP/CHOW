@@ -36,6 +36,7 @@ private:
     void initSliders();
     void initLabels();
     void initVisualizer();
+    void initFlipButton();
 
     ChowAudioProcessor& processor;
 
@@ -51,8 +52,10 @@ private:
     Slider outGainSlide;
     Label outGainLabel;
 
+    TextButton flipButton;
+    LookAndFeel* myLNF;
+
     AudioVisualiserComponent& visualizer;
     
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowAudioProcessorEditor)
 };

@@ -60,9 +60,10 @@ public:
     AudioParameterFloat* ratio;
     AudioParameterFloat* inGainDB;
     AudioParameterFloat* outGainDB;
+    AudioParameterBool* flip;
 
-    //@TODO: add parameter to flip rectifier direction
-    //@TODO: Dry wet param??
+    //@MAYBELATER: Dry wet param??
+    //@TODO: attack/release stuff??
 
     AudioVisualiserComponent* vis = new AudioVisualiserComponent (1);
 

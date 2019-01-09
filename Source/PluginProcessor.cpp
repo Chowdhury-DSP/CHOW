@@ -35,6 +35,8 @@ ChowAudioProcessor::ChowAudioProcessor()
 
     addParameter (outGainDB = new AudioParameterFloat (String ("outGaindB"), String ("Output Gain"),
                                                        -30.0f, 6.0f, 0.0f));
+
+    addParameter (flip = new AudioParameterBool (String ("flip"), String ("Flip"), true));
 }
 
 ChowAudioProcessor::~ChowAudioProcessor()
@@ -144,10 +146,12 @@ float ChowAudioProcessor::chow (float x)
     float y = x;
 
     const float threshGain = Decibels::decibelsToGain (threshDB->get());
-    if (x > threshGain)
-    {
+
+    if (! *flip && x > threshGain)
         y = threshGain + ((x - threshGain) / ratio->get());
-    }
+
+    else if (*flip && x < -threshGain)
+        y = -threshGain + ((x - threshGain) / ratio->get());
 
     //set y
     return y;
