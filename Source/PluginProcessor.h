@@ -60,6 +60,9 @@ public:
     AudioParameterFloat* ratio;
     AudioParameterFloat* inGaindB;
     AudioParameterFloat* outGaindB;
+
+    AudioVisualiserComponent* vis = new AudioVisualiserComponent (1);
+
 private:
     float chow (float x);
 

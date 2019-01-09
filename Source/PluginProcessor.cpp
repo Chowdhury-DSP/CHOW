@@ -107,12 +107,12 @@ void ChowAudioProcessor::changeProgramName (int /*index*/, const String& /*newNa
 void ChowAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     setRateAndBufferSizeDetails (sampleRate, samplesPerBlock);
+    vis->clear();
 }
 
 void ChowAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
+    vis->clear();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -158,15 +158,15 @@ void ChowAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& /
     ScopedNoDenormals noDenormals;
 
     buffer.applyGain (Decibels::decibelsToGain (inGaindB->get()));
-
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
     {
         auto* x = buffer.getWritePointer (channel);
         for (int n = 0; n < buffer.getNumSamples(); n++)
             x[n] = chow (x[n]);
     }
-
     buffer.applyGain (Decibels::decibelsToGain (outGaindB->get()));
+
+    vis->pushBuffer (buffer.getArrayOfReadPointers(), 1, buffer.getNumSamples());
 }
 
 //==============================================================================
