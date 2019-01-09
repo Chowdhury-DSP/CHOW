@@ -24,6 +24,17 @@ ChowAudioProcessor::ChowAudioProcessor()
                        )
 #endif
 {
+    addParameter (thresh = new AudioParameterFloat (String ("thresh"), String ("Threshold"),
+                                                    -100.0f, 0.0f, -27.0f));
+    
+    addParameter (ratio = new AudioParameterFloat (String ("ratio"), String ("Ratio"),
+                                                   0.0f, 20.0f, 10.0f));
+
+    addParameter (inGaindB = new AudioParameterFloat (String ("inGaindB"), String ("Input Gain dB"),
+                                                      -30.0f, 6.0f, 0.0f));
+
+    addParameter (outGaindB = new AudioParameterFloat (String ("outGaindB"), String ("Output Gain dB"),
+                                                       -30.0f, 6.0f, 0.0f));
 }
 
 ChowAudioProcessor::~ChowAudioProcessor()
@@ -79,24 +90,23 @@ int ChowAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void ChowAudioProcessor::setCurrentProgram (int index)
+void ChowAudioProcessor::setCurrentProgram (int /*index*/)
 {
 }
 
-const String ChowAudioProcessor::getProgramName (int index)
+const String ChowAudioProcessor::getProgramName (int /*index*/)
 {
     return {};
 }
 
-void ChowAudioProcessor::changeProgramName (int index, const String& newName)
+void ChowAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)
 {
 }
 
 //==============================================================================
 void ChowAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    setRateAndBufferSizeDetails (sampleRate, samplesPerBlock);
 }
 
 void ChowAudioProcessor::releaseResources()
@@ -131,33 +141,32 @@ bool ChowAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) con
 
 float ChowAudioProcessor::chow (float x)
 {
-    float cntrl = 1.0f;
-    float makeup = 1.6f;
-    float thresh = 0.05f;
-    float ratio = 10.0f;
+    float y = x;
 
-    //Set control voltage
-    if (x > thresh){
-        cntrl = thresh + ((x - thresh) / ratio);		
+    const float threshGain = Decibels::decibelsToGain (thresh->get());
+    if (x > threshGain)
+    {
+        y = threshGain + ((x - threshGain) / ratio->get());
     }
-    else { cntrl = x; }
 
     //set y
-    return cntrl * makeup;
+    return y;
 }
 
-void ChowAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+void ChowAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& /*midiMessages*/)
 {
     ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    buffer.applyGain (Decibels::decibelsToGain (inGaindB->get()));
+
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
     {
         auto* x = buffer.getWritePointer (channel);
         for (int n = 0; n < buffer.getNumSamples(); n++)
             x[n] = chow (x[n]);
     }
+
+    buffer.applyGain (Decibels::decibelsToGain (outGaindB->get()));
 }
 
 //==============================================================================
@@ -172,14 +181,14 @@ AudioProcessorEditor* ChowAudioProcessor::createEditor()
 }
 
 //==============================================================================
-void ChowAudioProcessor::getStateInformation (MemoryBlock& destData)
+void ChowAudioProcessor::getStateInformation (MemoryBlock& /*destData*/)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void ChowAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void ChowAudioProcessor::setStateInformation (const void* /*data*/, int /*sizeInBytes*/)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.

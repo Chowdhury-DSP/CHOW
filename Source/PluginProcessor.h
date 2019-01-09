@@ -58,6 +58,10 @@ public:
 private:
     float chow (float x);
 
+    AudioParameterFloat* thresh;
+    AudioParameterFloat* ratio;
+    AudioParameterFloat* inGaindB;
+    AudioParameterFloat* outGaindB;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowAudioProcessor)
