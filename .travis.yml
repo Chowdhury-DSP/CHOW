@@ -47,6 +47,25 @@ script:
 after_success: # upload mac bins
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/
-      ls
+      # cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/
+      # ls
+      # Copy Binaries
+      cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
+      cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
+      cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
+      cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
+      
+      # Set up Git
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI
+      
+      # Commit files
+      git status
+      git checkout -b release
+      git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
+      git status
+      
+      # Upload Files
+      git remote add origin https://github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
+      git push --quiet -u origin release
     fi
