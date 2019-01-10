@@ -56,17 +56,17 @@ after_success: # upload mac bins
       #cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
       
       # Set up Git
-      cd $TRAVIS_BUILD_DIR/
-      git config --global user.email "travis@travis-ci.org"
-      git config --global user.name "Travis CI"
+      #cd $TRAVIS_BUILD_DIR/
+      #git config --global user.email "travis@travis-ci.org"
+      #git config --global user.name "Travis CI"
       
       # Commit files
       #git status
-      git checkout -b release
-      git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
-      git status
+      #git checkout -b release
+      #git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
+      #git status
       
       # Upload Files
-      git remote add origin https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
-      git push --quiet -u origin release
+      #git remote add origin https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
+      #git push --quiet -u origin release
     fi
