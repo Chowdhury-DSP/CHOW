@@ -58,7 +58,7 @@ private:
 
     MyLNF myLNF;
 
-    AudioVisualiserComponent& visualizer;
+    std::unique_ptr<AudioVisualiserComponent> visualizer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowAudioProcessorEditor)
 };

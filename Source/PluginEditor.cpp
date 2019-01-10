@@ -33,8 +33,10 @@ enum
 
 
 ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), visualizer (*p.vis)
+    : AudioProcessorEditor (&p), processor (p)
 {
+    visualizer.reset (p.vis);
+
     initSliders();
     initLabels();    
     initVisualizer();   
@@ -105,12 +107,11 @@ void ChowAudioProcessorEditor::initLabels()
 
 void ChowAudioProcessorEditor::initVisualizer()
 {
-    //@TODO: fine tune visualizer (override paint function?)
-    visualizer.setRepaintRate (1000);
-    visualizer.setBufferSize (128);
-    visualizer.setSamplesPerBlock (processor.getBlockSize());
-    visualizer.setColours (Colours::black, Colours::darkorange);
-    addAndMakeVisible (visualizer);
+    visualizer->setRepaintRate (1000);
+    visualizer->setBufferSize (128);
+    visualizer->setSamplesPerBlock (processor.getBlockSize());
+    visualizer->setColours (Colours::black, Colours::darkorange);
+    addAndMakeVisible (visualizer.get());
 }
 
 void ChowAudioProcessorEditor::initButtons()
@@ -175,7 +176,7 @@ void ChowAudioProcessorEditor::resized()
 
     auto bounds = getLocalBounds();
     bounds.removeFromTop (visualizerY);
-    visualizer.setBounds (bounds);
+    visualizer->setBounds (bounds);
 }
 
 AudioParameterFloat* ChowAudioProcessorEditor::getParamForSlider (Slider* slider)
