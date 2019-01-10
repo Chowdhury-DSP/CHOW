@@ -37,7 +37,7 @@ private:
     void initSliders();
     void initLabels();
     void initVisualizer();
-    void initFlipButton();
+    void initButtons();
 
     ChowAudioProcessor& processor;
 
@@ -54,6 +54,8 @@ private:
     Label outGainLabel;
 
     TextButton flipButton;
+    TextButton rectButton;
+
     MyLNF myLNF;
 
     AudioVisualiserComponent& visualizer;

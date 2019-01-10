@@ -23,10 +23,10 @@ enum
     labelHeight = 20,
     labelY = 35,
 
-    flipX = width - 60,
-    flipY = 7,
-    flipWidth = 50,
-    flipHeight = 25,
+    buttonX = 10,
+    buttonY = 7,
+    buttonWidth = 50,
+    buttonHeight = 25,
 
     visualizerY = 160,
 };
@@ -38,7 +38,7 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
     initSliders();
     initLabels();    
     initVisualizer();   
-    initFlipButton();
+    initButtons();
 
     setSize (width, height);
 }
@@ -46,6 +46,7 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
 ChowAudioProcessorEditor::~ChowAudioProcessorEditor()
 {
     flipButton.setLookAndFeel (nullptr);
+    rectButton.setLookAndFeel (nullptr);
     threshSlide.setLookAndFeel (nullptr);
     ratioSlide.setLookAndFeel (nullptr);
     inGainSlide.setLookAndFeel (nullptr);
@@ -112,22 +113,36 @@ void ChowAudioProcessorEditor::initVisualizer()
     addAndMakeVisible (visualizer);
 }
 
-void ChowAudioProcessorEditor::initFlipButton()
+void ChowAudioProcessorEditor::initButtons()
 {
-    flipButton.setName (processor.flip->name);
-    flipButton.setButtonText (flipButton.getName());
+    auto setupButton = [this] (TextButton& button, AudioParameterBool* param)
+    {
+        button.setName (param->name);
+        button.setButtonText (button.getName());
 
-    flipButton.setLookAndFeel (&myLNF);
-    flipButton.setColour (TextButton::buttonOnColourId, Colours::darkorange);
-    flipButton.setColour (TextButton::textColourOnId, Colours::black);
-    flipButton.setColour (TextButton::buttonColourId, Colours::black);
-    flipButton.setColour (TextButton::textColourOffId, Colours::darkorange);
+        button.setLookAndFeel (&myLNF);
+        button.setColour (TextButton::buttonOnColourId, Colours::darkorange);
+        button.setColour (TextButton::textColourOnId, Colours::black);
+        button.setColour (TextButton::buttonColourId, Colours::black);
+        button.setColour (TextButton::textColourOffId, Colours::darkorange);
 
-    flipButton.setToggleState (processor.flip->get(), dontSendNotification);
-    flipButton.setClickingTogglesState (true);
+        button.setToggleState (param->get(), dontSendNotification);
+        button.setClickingTogglesState (true);
+
+        addAndMakeVisible (button);
+    };
+
+    setupButton (flipButton, processor.flip);
     flipButton.onStateChange = [this] { *processor.flip = flipButton.getToggleState(); };
 
-    addAndMakeVisible (flipButton);
+    setupButton (rectButton, processor.rect);
+    rectButton.onStateChange = [this]
+    { 
+        bool newRect = rectButton.getToggleState();
+        *processor.rect = newRect;
+        threshSlide.setEnabled (! newRect);
+        ratioSlide.setEnabled (! newRect);
+    };
 }
 
 //==============================================================================
@@ -144,7 +159,8 @@ void ChowAudioProcessorEditor::paint (Graphics& g)
 
 void ChowAudioProcessorEditor::resized()
 {
-    flipButton.setBounds (flipX, flipY, flipWidth, flipHeight);
+    rectButton.setBounds (buttonX, buttonY, buttonWidth, buttonHeight);
+    flipButton.setBounds (width - buttonWidth - buttonX, buttonY, buttonWidth, buttonHeight);
 
     inGainLabel.setBounds (0, labelY, sliderWidth, labelHeight);
     threshLabel.setBounds (inGainLabel.getRight(), labelY, sliderWidth, labelHeight);
