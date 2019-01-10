@@ -47,37 +47,26 @@ script:
 after_success: # upload mac bins
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
-      echo "AU folder:"
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component/Contents/
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/
       ls
-      
-      echo "VST folder:"
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst/
-      ls
-      
-      echo "VST3 folder:"
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3/
-      ls
-      
-      echo "App folder:"
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app/
-      ls
+
       # Copy Binaries
-      #cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
-      #cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
-      #cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
-      #cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
       
       # Set up Git
-      #cd $TRAVIS_BUILD_DIR/
-      #git config --global user.email "travis@travis-ci.org"
-      #git config --global user.name "Travis CI"
+      cd $TRAVIS_BUILD_DIR/
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI"
       
       # Commit files
       #git status
-      #git checkout -b release
+      git checkout -b release
+      git add Bin/Mac/
       #git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
-      #git status
+      git status
       
       # Upload Files
       #git remote add origin https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
