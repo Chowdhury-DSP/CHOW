@@ -5,7 +5,7 @@
 
 ---
 
-<span style="font-size:2em;">**truculent**</span> &nbsp; adjective<br/>
+<span style="font-size:2em;">**truculent**</span> adjective<br/>
 tru·​cu·​lent | \ˈtrə-kyə-lənt also ˈtrü-  \
 Definition of *truculent*<br/>
 1 : aggressively self-assertive : <span style="text-decoration:underline">BELLIGERENT</span><br/>
