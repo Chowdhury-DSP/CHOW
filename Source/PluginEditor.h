@@ -12,24 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-
-//==============================================================================
-class MyLNF : public LookAndFeel_V4
-{
-public:
-    MyLNF()
-    {
-        setColour (ComboBox::outlineColourId, Colours::darkorange);
-    }
-
-    Font getTextButtonFont (TextButton& button, int buttonHeight) override
-    {
-        return LookAndFeel_V4::getTextButtonFont (button, buttonHeight).boldened();
-    }
-
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MyLNF)
-};
+#include "MyLNF.h"
 
 //==============================================================================
 /**

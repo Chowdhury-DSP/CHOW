@@ -46,6 +46,10 @@ ChowAudioProcessorEditor::ChowAudioProcessorEditor (ChowAudioProcessor& p)
 ChowAudioProcessorEditor::~ChowAudioProcessorEditor()
 {
     flipButton.setLookAndFeel (nullptr);
+    threshSlide.setLookAndFeel (nullptr);
+    ratioSlide.setLookAndFeel (nullptr);
+    inGainSlide.setLookAndFeel (nullptr);
+    outGainSlide.setLookAndFeel (nullptr);
 }
 
 void ChowAudioProcessorEditor::initSliders()
@@ -53,14 +57,15 @@ void ChowAudioProcessorEditor::initSliders()
     auto setupSlider = [this] (Slider& slide, AudioParameterFloat* param,
                                float skewMidPoint = NAN, String textSuffix = String (" dB"), float step = 0.1f)
     {
-        //@TODO: Custom slider LNF??
         slide.setName (param->name);
         slide.setRange (param->range.start, param->range.end, step);
         if (slide.getRange().contains (skewMidPoint))
             slide.setSkewFactorFromMidPoint ((double) skewMidPoint);
 
+        slide.setLookAndFeel (&myLNF);
         slide.setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
         slide.setColour (Slider::rotarySliderFillColourId, Colours::darkorange);
+        slide.setColour (Slider::rotarySliderOutlineColourId, Colours::darkgrey);
         slide.setColour (Slider::textBoxOutlineColourId, Colours::transparentBlack);
         slide.setColour (Slider::thumbColourId, Colours::red);
         slide.setColour (Slider::textBoxTextColourId, Colours::darkorange);
