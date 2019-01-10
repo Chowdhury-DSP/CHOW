@@ -46,7 +46,7 @@ script:
 
 after_success: # upload mac bins
   - |
-    if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/
+    if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/
       ls
     fi
