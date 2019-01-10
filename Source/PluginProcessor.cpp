@@ -185,18 +185,33 @@ AudioProcessorEditor* ChowAudioProcessor::createEditor()
 }
 
 //==============================================================================
-//@TODO: save state info
-void ChowAudioProcessor::getStateInformation (MemoryBlock& /*destData*/)
+void ChowAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    std::unique_ptr<XmlElement> xml (new XmlElement ("ChowXmlData"));
+
+    xml->setAttribute ("threshDB", (double) *threshDB);
+    xml->setAttribute ("ratio", (double) *ratio);
+    xml->setAttribute ("inGainDB", (double) *inGainDB);
+    xml->setAttribute ("outGainDB", (double) *outGainDB);
+    xml->setAttribute ("flip", *flip);
+
+    copyXmlToBinary (*xml, destData);
 }
 
-void ChowAudioProcessor::setStateInformation (const void* /*data*/, int /*sizeInBytes*/)
+void ChowAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+    if (xmlState.get() != nullptr)
+    {
+        if (xmlState->hasTagName ("ChowXmlData"))
+        {
+            *threshDB = (float) xmlState->getDoubleAttribute ("threshDB", 0.0);
+            *ratio = (float) xmlState->getDoubleAttribute ("ratio", 10.0);
+            *inGainDB = (float) xmlState->getDoubleAttribute ("inGainDB", 0.0);
+            *outGainDB = (float) xmlState->getDoubleAttribute ("outGainDB", 0.0);
+            *flip = xmlState->getBoolAttribute ("flip", false);
+        }
+    }
 }
 
 //==============================================================================
