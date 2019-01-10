@@ -17,7 +17,7 @@ public:
     }
 
     void drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
-                           float rotaryStartAngle, float rotaryEndAngle, Slider& slider)
+                           float rotaryStartAngle, float rotaryEndAngle, Slider& slider) override
     {
         auto outline = slider.findColour (Slider::rotarySliderOutlineColourId);
         auto fill    = slider.isEnabled() ? slider.findColour (Slider::rotarySliderFillColourId) : Colours::grey;

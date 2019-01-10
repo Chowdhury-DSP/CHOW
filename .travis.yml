@@ -43,3 +43,10 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ -configuration Release | xcpretty -s -f `xcpretty-travis-formatter`; fi
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
   - echo "SUCCESS"
+
+after_success: # upload mac bins
+  - |
+    if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/
+      ls
+    fi

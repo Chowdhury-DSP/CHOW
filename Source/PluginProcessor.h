@@ -65,7 +65,7 @@ public:
     AudioParameterBool* rect;
 
     //@MAYBELATER: Dry wet param??
-    //@MAYBELATER: attack/release stuff??
+    //@MAYBELATER: attack/release stuff??, or at least smooth param changes
 
     AudioVisualiserComponent* vis = new AudioVisualiserComponent (1);
 
