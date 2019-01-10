@@ -60,7 +60,9 @@ public:
     AudioParameterFloat* ratio;
     AudioParameterFloat* inGainDB;
     AudioParameterFloat* outGainDB;
+
     AudioParameterBool* flip;
+    AudioParameterBool* rect;
 
     //@MAYBELATER: Dry wet param??
     //@MAYBELATER: attack/release stuff??
