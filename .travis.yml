@@ -47,7 +47,20 @@ script:
 after_success: # upload mac bins
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component
+      echo "AU folder:"
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component/Contents/
+      ls
+      
+      echo "VST folder:"
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst/
+      ls
+      
+      echo "VST3 folder:"
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3/
+      ls
+      
+      echo "App folder:"
+      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app/
       ls
       # Copy Binaries
       #cp $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
