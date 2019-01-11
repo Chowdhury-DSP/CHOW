@@ -44,7 +44,7 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
   - echo "SUCCESS"
 
-if: (type != push) AND ($TRAVIS_OS_NAME == 'osx')
+#if: (type != push) AND ($TRAVIS_OS_NAME == 'osx')
 
 deploy:
   provider: script
