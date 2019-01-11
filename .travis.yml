@@ -67,8 +67,14 @@ after_success: # upload mac bins
       git add Bin/Mac/
       #git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
       git status
+      git diff CHOW.jucer
       
       # Upload Files
+      - eval "$(ssh-agent -s)" #start the ssh agent
+      - chmod 600 .travis/deploy_key.pem # this key should have push access
+      - ssh-add .travis/deploy_key.pem
+      - git remote add origin https://github.com/jatinchowdhury18.git
+
       #git remote add origin https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
       #git push --quiet -u origin release
     fi
