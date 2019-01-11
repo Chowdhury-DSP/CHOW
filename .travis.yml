@@ -50,7 +50,7 @@ after_success: # upload mac bins
       cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/
       ls
 
-      push.sh
+      .travis/push.sh
 
       # Copy Binaries
       #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
