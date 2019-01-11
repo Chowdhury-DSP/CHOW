@@ -67,9 +67,10 @@ after_success: # upload mac bins
       git remote add origin https://$GH_TOKEN@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
       # git push --quiet --set-upstream origin-pages gh-pages
       # git push -u origin release
+      git remote -v
       git push
-    fi
 
+    fi
 
 # deploy:
 #   provider: script
