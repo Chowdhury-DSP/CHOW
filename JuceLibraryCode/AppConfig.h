@@ -407,7 +407,7 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.yourcompany.CHOW
+ #define JucePlugin_CFBundleIdentifier     com.chowdsp.CHOW
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           0
