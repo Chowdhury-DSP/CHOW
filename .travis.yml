@@ -44,28 +44,29 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
   - echo "SUCCESS"
 
-# after_success: # upload mac bins
-#   - |
-#     if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
-#       echo "Copying Files..."
-#       cd $TRAVIS_BUILD_DIR/
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
-# 
-#       echo "Setting Up Git..."
-#       git config --global user.email "travis@travis-ci.org"
-#       git config --global user.name "Travis CI"
-# 
-#       echo "Committing Files..."
-#       git checkout -b builds
-#       git add Bin/Mac/
-#       git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
-# 
-#       echo "Pushing to branch..."
-#       git push https://jatinchowdhury18:11RedTailDrive@github.com/jatinchowdhury18/CHOW.git
-#     fi
+after_success: # upload mac bins
+  - |
+    if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
+      echo "Copying Files..."
+      cd $TRAVIS_BUILD_DIR/
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
+
+      echo "Setting Up Git..."
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI"
+
+      echo "Committing Files..."
+      git checkout -b builds
+      git add Bin/Mac/
+      git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
+
+      echo "Pushing to branch..."
+      # git push https://username:password@github.com/jatinchowdhury18/CHOW.git
+      git push https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git
+    fi
 
 env:
   global:
