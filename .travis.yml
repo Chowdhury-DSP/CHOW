@@ -64,7 +64,7 @@ script:
 #       git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
 # 
 #       echo "Pushing to branch..."
-#       git push https://jatinchowdhury18:11RedTailDrive@github.com/jatinchowdhury18/CHOW.git
+#       git push https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git
 #     fi
 
 env:
