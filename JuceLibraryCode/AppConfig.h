@@ -341,19 +341,19 @@
  #define JucePlugin_Name                   "CHOW"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "CHOW"
+ #define JucePlugin_Desc                   "Maximally truculent distortion"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "yourcompany"
+ #define JucePlugin_Manufacturer           "Chowdhury DSP"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    ""
+ #define JucePlugin_ManufacturerWebsite    "chowdsp.com"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      ""
+ #define JucePlugin_ManufacturerEmail      "chowdsp@gmail.com"
 #endif
 #ifndef  JucePlugin_ManufacturerCode
- #define JucePlugin_ManufacturerCode       0x4d616e75 // 'Manu'
+ #define JucePlugin_ManufacturerCode       0x43686f77 // 'Chow'
 #endif
 #ifndef  JucePlugin_PluginCode
  #define JucePlugin_PluginCode             0x5a6b3069 // 'Zk0i'
@@ -425,7 +425,7 @@
  #define JucePlugin_RTASDisableMultiMono   0
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.yourcompany.CHOW
+ #define JucePlugin_AAXIdentifier          com.chowdsp.CHOW
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
@@ -449,7 +449,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "yourcompany: CHOW"
+ #define JucePlugin_IAAName                "Chowdhury DSP: CHOW"
 #endif
 
 //==============================================================================
