@@ -30,7 +30,7 @@ before_install:
   #Build Projucer
   - cd $TRAVIS_BUILD_DIR/JUCE/extras/Projucer/Builds/$BUILD_FOLDER
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project Projucer.xcodeproj > /dev/null; fi
-  - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:quiet Projucer.sln; fi
+  - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal Projucer.sln; fi
 
 script:
   - cd $TRAVIS_BUILD_DIR/
