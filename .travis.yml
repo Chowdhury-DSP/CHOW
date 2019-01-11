@@ -64,9 +64,10 @@ after_success: # upload mac bins
       git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
 
       echo "Pushing to branch..."
-      git remote add origin https://$GH_TOKEN@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
-      git remote -v
-      git push -u origin master
+      git push https://jatinchowdhury18:11RedTailDrive@github.com/jatinchowdhury18/CHOW.git
+      #git remote add origin https://$GH_TOKEN@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
+      #git remote -v
+      #git push -u origin master
     fi
 
 env:
