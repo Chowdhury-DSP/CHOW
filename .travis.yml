@@ -1,6 +1,6 @@
 notifications:
   email: false
-  
+
 language: cpp
 sudo: false
 
@@ -26,20 +26,31 @@ before_install:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then gem install xcpretty-travis-formatter; fi
   # windows setup msbuild path
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then export PATH=$MSBUILD_PATH:$PATH; fi
-  
+
   #Build Projucer
   - cd $TRAVIS_BUILD_DIR/JUCE/extras/Projucer/Builds/$BUILD_FOLDER
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project Projucer.xcodeproj > /dev/null; fi
-  - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:quiet Projucer.sln; fi
-  
+  - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal Projucer.sln; fi
+
 script:
   - cd $TRAVIS_BUILD_DIR/
   - $PROJUCER --set-global-search-path $TRAVIS_OS_NAME defaultJuceModulePath $TRAVIS_BUILD_DIR/JUCE/modules
   - $PROJUCER --set-global-search-path $TRAVIS_OS_NAME vstLegacyPath $TRAVIS_BUILD_DIR/VST2_SDK
   - $PROJUCER --resave CHOW.jucer
+
   - cd $TRAVIS_BUILD_DIR/Builds/$BUILD_FOLDER/
-  
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ clean; fi
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ -configuration Release | xcpretty -s -f `xcpretty-travis-formatter`; fi
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
   - echo "SUCCESS"
+
+deploy:
+  provider: script
+  script: Scripts/push.sh
+  on:
+    branch: master
+    condition: $TRAVIS_OS_NAME == 'osx'
+
+env:
+  global:
+    secure: rufS7Oae56diLomkcsVYEvg3GKLh+YuiNy7YPKfcLDPIfqrUmWyo56vOjHkL+fGM+pPvA8UoOjJf7128aaN5N8nsFdAQr2Gq4TbyyE9V/IxlH7ib9dcBdqJRcCwuRgOhWhwGm4AlRX21+bJWGZYi2n0QKn6Ri2I3dWoFb/UIfQXRDo8MtFxnd7S1HD6iPRHGDvGWRxi2AvUKI6W8ed+L/nNS8EsH73vJJ819P0HpUAJDzW8fc7KbQoZOryTdLCiASyxSw0AYGYeVxvcnJe0T4zOHdGhj9d1xBVMphR/y2tuiCWBFEB56VvPYC/51Jt/bddfsoTbkC7ZRmlc7aWcKmCAf+JN9G9outRuoPZRk+P+koVnTaflmJJaaS0UEiXFTzik6q942RiSSrLLf+tN6k2rwDFDSYJ2vdrdsVzwSI6CZ2leXsMQqERwM+L/eOtYnidGosNyyxD6THObmowwtgMi1d3optu0K6DOUbxizvWGiun8u2r8P0W/0JxW8JkRHoOJmeM1j9B24QdV7IgI7lesUkijy2Ei4Vvtff/OW1roPr6zevL48ciTx8qG1HA/EjzkRfAjLhDXczvdjRLERbbn+IhQ4WqiiamZ0TvyYBKJbYOehQwd4bk0eYm7UZld/v4LFlWeT1DmBpZsEsGza4+WROJQfSnG3d7aiqM0zBVs=

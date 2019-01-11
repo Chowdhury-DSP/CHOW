@@ -141,7 +141,6 @@ void ChowAudioProcessorEditor::initButtons()
     { 
         bool newRect = rectButton.getToggleState();
         *processor.rect = newRect;
-        threshSlide.setEnabled (! newRect);
         ratioSlide.setEnabled (! newRect);
     };
 }
