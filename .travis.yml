@@ -44,42 +44,48 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
   - echo "SUCCESS"
 
-after_success: # upload mac bins
-  - |
-    if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
-      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/
-      ls
+if: (type != push) AND ($TRAVIS_OS_NAME == 'osx')
 
-       bash push.sh
-
-      # Copy Binaries
-      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
-      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
-      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
-      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
-      
-      # Set up Git
-      #cd $TRAVIS_BUILD_DIR/
-      #git config --global user.email "travis@travis-ci.org"
-      #git config --global user.name "Travis CI"
-      
-      # Commit files
-      #git status
-      #git checkout -b release
-      #git add Bin/Mac/
-      #git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
-      #git status
-      #git diff CHOW.jucer
-      
-      # Upload Files
-      #- eval "$(ssh-agent -s)" #start the ssh agent
-      #- chmod 600 .travis/deploy_key.pem # this key should have push access
-      #- ssh-add .travis/deploy_key.pem
-      #- git remote add origin git@github.com:jatinchowdhury18/CHOW.git #https://github.com/jatinchowdhury18.git
-
-      #git remote add origin https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
-      #git push --quiet -u origin release
-    fi
+deploy:
+  provider: script
+  script: push.sh
+  
+#after_success: # upload mac bins
+#  - |
+#    if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
+#      cd $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/
+#      ls
+#
+#       bash push.sh
+#
+#      # Copy Binaries
+#      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
+#      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
+#      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
+#      #cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
+#      
+#      # Set up Git
+#      #cd $TRAVIS_BUILD_DIR/
+#      #git config --global user.email "travis@travis-ci.org"
+#      #git config --global user.name "Travis CI"
+#      
+#      # Commit files
+#      #git status
+#      #git checkout -b release
+#      #git add Bin/Mac/
+#      #git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
+#      #git status
+#      #git diff CHOW.jucer
+#      
+#      # Upload Files
+#      #- eval "$(ssh-agent -s)" #start the ssh agent
+#      #- chmod 600 .travis/deploy_key.pem # this key should have push access
+#      #- ssh-add .travis/deploy_key.pem
+#      #- git remote add origin git@github.com:jatinchowdhury18/CHOW.git #https://github.com/jatinchowdhury18.git
+#
+#      #git remote add origin https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
+#      #git push --quiet -u origin release
+#    fi
 
 env:
   global:
