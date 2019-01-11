@@ -46,7 +46,7 @@ script:
 
 after_success: # upload mac bins
   - |
-    if [[ $TRAVIS_OS_NAME == 'osx' && type != push]]; then
+    if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
       echo "Copying Files..."
       cd $TRAVIS_BUILD_DIR/
       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
