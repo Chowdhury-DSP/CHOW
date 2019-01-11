@@ -42,11 +42,13 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ clean; fi
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ -configuration Release | xcpretty -s -f `xcpretty-travis-formatter`; fi
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
+  - cd $TRAVIS_BUILD_DIR/
   - echo "SUCCESS"
 
 deploy:
   provider: script
   script: Scripts/push.sh
+  skip_cleanup: true
   on:
     branch: master
     condition: $TRAVIS_OS_NAME == 'osx'
