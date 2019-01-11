@@ -42,16 +42,42 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ clean; fi
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then xcodebuild -project CHOW.xcodeproj/ -configuration Release | xcpretty -s -f `xcpretty-travis-formatter`; fi
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
-  - cd $TRAVIS_BUILD_DIR/
   - echo "SUCCESS"
 
-deploy:
-  provider: script
-  script: Scripts/push.sh
-  skip_cleanup: true
-  on:
-    branch: master
-    condition: $TRAVIS_OS_NAME == 'osx'
+after_success: # upload mac bins
+  - |
+    if [[ $TRAVIS_OS_NAME == 'osx' && type != push]]; then
+      echo "Copying Files..."
+      cd $TRAVIS_BUILD_DIR/
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
+
+      echo "Setting Up Git..."
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI"
+
+      echo "Committing Files..."
+      # git checkout -b release
+      git add Bin/Mac/
+      git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
+
+      echo "Pushing to branch..."
+      git remote add origin https://$GH_TOKEN@github.com/jatinchowdhury18/CHOW.git > /dev/null 2>&1
+      # git push --quiet --set-upstream origin-pages gh-pages
+      # git push -u origin release
+      # git push
+    fi
+
+
+# deploy:
+#   provider: script
+#   script: Scripts/push.sh
+#   skip_cleanup: true
+#   on:
+#     branch: master
+#     condition: $TRAVIS_OS_NAME == 'osx'
 
 env:
   global:
