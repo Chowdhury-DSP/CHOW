@@ -1,0 +1,3 @@
+# Tell Git Linguist to ignore html and objective-C
+*.html linguist-vendored=true
+*.m linguist-vendored=true
