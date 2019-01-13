@@ -33,6 +33,9 @@ If you would like to build CHOW for yourself, use the following steps, otherwise
   # Clone the repository
   git clone --recursive https://github.com/jatinchowdhury18/CHOW.git
   
+  # Enter the repository
+  cd CHOW
+  
   # Initialize JUCE submodule
   git submodule update --init --recursive
   ```
