@@ -1,8 +1,0 @@
-# Tell Git Linguist this is a C++ project
-* linguist-vendored
-*.cpp linguist-vendored=false
-*.h linguist-vendored=false
-*.c linguist-vendored=false
-*.yml linguist-vendored=false
-*.md linguist-vendored=false
-*.iss linguist-vendored=false
