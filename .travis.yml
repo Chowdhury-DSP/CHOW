@@ -2,7 +2,7 @@ notifications:
   email: false
 
 language: cpp
-sudo: false
+sudo: required
 
 # if pull request: always build
 # if push: only build for master branch
@@ -22,6 +22,7 @@ matrix:
 
 before_install:
   # mac installs
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then sudo installer -pkg /path/to/application.pkg -target /Applications; fi
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then gem install xcpretty; fi
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then gem install xcpretty-travis-formatter; fi
   # windows setup msbuild path
