@@ -67,7 +67,7 @@ public:
     //@MAYBELATER: Dry wet param??
     //@MAYBELATER: attack/release stuff??, or at least smooth param changes
 
-    AudioVisualiserComponent* vis = new AudioVisualiserComponent (1);
+    std::unique_ptr<AudioVisualiserComponent> vis;
 
 private:
     float chow (float x);

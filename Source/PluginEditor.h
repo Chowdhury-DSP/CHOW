@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "MyLNF.h"
+#include "ChowSlider.h"
 
 //==============================================================================
 /**
@@ -47,10 +48,10 @@ private:
     Slider ratioSlide;
     Label ratioLabel;
 
-    Slider inGainSlide;
+    ChowSlider inGainSlide;
     Label inGainLabel;
 
-    Slider outGainSlide;
+    ChowSlider outGainSlide;
     Label outGainLabel;
 
     TextButton flipButton;
@@ -58,7 +59,7 @@ private:
 
     MyLNF myLNF;
 
-    std::unique_ptr<AudioVisualiserComponent> visualizer;
+    AudioVisualiserComponent& visualizer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowAudioProcessorEditor)
 };

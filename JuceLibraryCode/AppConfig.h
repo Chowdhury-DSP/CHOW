@@ -36,7 +36,7 @@
 // BEGIN SECTION A
 
 #ifndef JUCE_DISPLAY_SPLASH_SCREEN
- #define JUCE_DISPLAY_SPLASH_SCREEN 1
+ #define JUCE_DISPLAY_SPLASH_SCREEN 0
 #endif
 
 #ifndef JUCE_REPORT_APP_USAGE
@@ -450,6 +450,12 @@
 #endif
 #ifndef  JucePlugin_IAAName
  #define JucePlugin_IAAName                "Chowdhury DSP: CHOW"
+#endif
+#ifndef  JucePlugin_VSTNumMidiInputs
+ #define JucePlugin_VSTNumMidiInputs       16
+#endif
+#ifndef  JucePlugin_VSTNumMidiOutputs
+ #define JucePlugin_VSTNumMidiOutputs      16
 #endif
 
 //==============================================================================

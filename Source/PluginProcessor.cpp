@@ -24,6 +24,8 @@ ChowAudioProcessor::ChowAudioProcessor()
                        )
 #endif
 {
+    vis.reset (new AudioVisualiserComponent (1));
+
     addParameter (threshDB = new AudioParameterFloat (String ("thresh"), String ("Threshold"),
                                                     -100.0f, 0.0f, -27.0f));
     
