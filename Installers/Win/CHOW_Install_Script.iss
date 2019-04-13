@@ -1,10 +1,12 @@
 [Setup]
 AppName=CHOW
-AppVersion=1.0.0
+AppVersion=1.1.0
 DisableDirPage=yes
 DefaultDirName={cf}
 DefaultGroupName=CHOW
-OutputBaseFilename=CHOW-Win-1.0.0
+OutputBaseFilename=CHOW-Win-1.1.0
+OutputDir=.
+LicenseFile=..\..\License
 
 [Types]
 Name: "full"; Description: "Full installation"
@@ -16,9 +18,9 @@ Name: "VST3"; Description: "VST3 Plugin"; Types: full
 Name: "Standalone"; Description: "Standalone Plugin"; Types: full
 
 [Files]
-Source: "..\..\Bin\Win\CHOW.dll"; DestDir: "{code:GetDir|VST}"; Components: VST 
-Source: "..\..\Bin\Win\CHOW.vst3"; DestDir: "{code:GetDir|VST3}"; Components: VST3
-Source: "..\..\Bin\Win\CHOW.exe"; DestDir: "{code:GetDir|Stand}"; Components: Standalone
+Source: "..\..\Builds\VisualStudio2017\x64\Release\VST\CHOW.dll"; DestDir: "{code:GetDir|VST}"; Components: VST 
+Source: "..\..\Builds\VisualStudio2017\x64\Release\VST3\CHOW.vst3"; DestDir: "{code:GetDir|VST3}"; Components: VST3
+Source: "..\..\Builds\VisualStudio2017\x64\Release\Standalone Plugin\CHOW.exe"; DestDir: "{code:GetDir|Stand}"; Components: Standalone
 //Source: "CHOW.dpm"; DestDir: "{app}\Digidesign\DAE\Plug-Ins"
 //Source: "CHOW.aaxplugin\*"; DestDir: "{app}\Avid\Audio\Plug-In\CHOW.aaxplugin"; Flags: recursesubdirs
 

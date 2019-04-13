@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="zK0IVL" name="CHOW" projectType="audioplug" jucerVersion="5.4.3"
               pluginFormats="buildAU,buildStandalone,buildVST,buildVST3" bundleIdentifier="com.chowdsp.CHOW"
-              version="1.0.0" companyName="Chowdhury DSP" companyWebsite="chowdsp.com"
+              version="1.1.0" companyName="Chowdhury DSP" companyWebsite="chowdsp.com"
               companyEmail="chowdsp@gmail.com" pluginName="CHOW" pluginDesc="Maximally truculent distortion"
               pluginManufacturerCode="Chow" aaxIdentifier="com.chowdsp.CHOW">
   <MAINGROUP id="fvFmFA" name="CHOW">
