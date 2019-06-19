@@ -40,10 +40,39 @@ ChowAudioProcessor::ChowAudioProcessor()
 
     addParameter (flip = new AudioParameterBool (String ("flip"), String ("Flip"), false));
     addParameter (rect = new AudioParameterBool (String ("rect"), String ("Rect"), false));
+
+    threshDB->addListener (this);
+    ratio->addListener (this);
+    inGainDB->addListener (this);
+    outGainDB->addListener (this);
+    flip->addListener (this);
+    rect->addListener (this);
 }
 
 ChowAudioProcessor::~ChowAudioProcessor()
 {
+}
+
+void ChowAudioProcessor::parameterValueChanged (int paramIndex, float /*newValue*/)
+{
+    auto* editor = dynamic_cast<ChowAudioProcessorEditor*> (getActiveEditor());
+    if (editor != nullptr)
+    {
+        auto* floatParam = dynamic_cast<AudioParameterFloat*> (getParameters()[paramIndex]);
+        if (floatParam != nullptr)
+        {
+            if (Slider* slider = editor->getSliderForParam (floatParam))
+                slider->setValue (dynamic_cast<AudioParameterFloat*> (getParameters()[paramIndex])->get());
+            return;
+        }
+
+        auto* boolParam = dynamic_cast<AudioParameterBool*> (getParameters()[paramIndex]);
+        if (boolParam != nullptr)
+        {
+            if (Button* button = editor->getButtonForParam (boolParam))
+                button->setToggleState (dynamic_cast<AudioParameterBool*> (getParameters()[paramIndex])->get(), dontSendNotification);
+        }
+    }
 }
 
 //==============================================================================
@@ -86,22 +115,85 @@ double ChowAudioProcessor::getTailLengthSeconds() const
 
 int ChowAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    return 5;
 }
 
 int ChowAudioProcessor::getCurrentProgram()
 {
-    return 0;
+    return programNum;
 }
 
-void ChowAudioProcessor::setCurrentProgram (int /*index*/)
+void ChowAudioProcessor::setCurrentProgram (int index)
 {
+    programNum = index;
+
+    switch (index)
+    {
+    case 0:
+        *threshDB = -27.0f;
+        *ratio = 10.0f;
+        *inGainDB = 0.0f;
+        *outGainDB = 0.0f;
+        *flip = false;
+        *rect = false;
+        return;
+
+    case 1:
+        *threshDB = 0.0f;
+        *ratio = 1.0f;
+        *flip = false;
+        *rect = false;
+        return;
+
+    case 2:
+        *threshDB = -100.0f;
+        *ratio = 50.0f;
+        *flip = false;
+        *rect = false;
+        return;
+
+    case 3:
+        *threshDB = -100.0f;
+        *ratio = 0.0f;
+        *flip = false;
+        *rect = true;
+        return;
+
+    case 4:
+        *threshDB = -100.0f;
+        *ratio = 0.0f;
+        *flip = true;
+        *rect = true;
+        return;
+
+    default:
+        programNum = 0;
+        return;
+    }
 }
 
-const String ChowAudioProcessor::getProgramName (int /*index*/)
+const String ChowAudioProcessor::getProgramName (int index)
 {
-    return {};
+    switch (index)
+    {
+    case 0:
+        return String ("Default");
+
+    case 1:
+        return String ("Clean");
+
+    case 2:
+        return String ("Smash");
+
+    case 3:
+        return String ("Rect");
+
+    case 4:
+        return String ("Flip Rect");
+
+    default:
+        return ("Nien");
+    }
 }
 
 void ChowAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)

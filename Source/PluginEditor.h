@@ -30,6 +30,8 @@ public:
     void resized() override;
 
     AudioParameterFloat* getParamForSlider (Slider* slider);
+    Slider* getSliderForParam (AudioParameterFloat* param);
+    Button* getButtonForParam (AudioParameterBool* param);
     void sliderValueChanged (Slider* slider) override;
     void sliderDragStarted (Slider* slider) override;
     void sliderDragEnded (Slider* slider) override;

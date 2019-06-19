@@ -134,14 +134,17 @@ void ChowAudioProcessorEditor::initButtons()
     };
 
     setupButton (flipButton, processor.flip);
-    flipButton.onStateChange = [this] { *processor.flip = flipButton.getToggleState(); };
+    flipButton.onClick = [this] { *processor.flip = flipButton.getToggleState(); };
 
     setupButton (rectButton, processor.rect);
     rectButton.onStateChange = [this]
     { 
         bool newRect = rectButton.getToggleState();
-        *processor.rect = newRect;
         ratioSlide.setEnabled (! newRect);
+    };
+    rectButton.onClick  = [this]
+    {
+        *processor.rect = rectButton.getToggleState();
     };
 }
 
@@ -188,6 +191,30 @@ AudioParameterFloat* ChowAudioProcessorEditor::getParamForSlider (Slider* slider
         return processor.inGainDB;
     else if (processor.outGainDB->name == slider->getName())
         return processor.outGainDB;
+    else
+        return nullptr;
+}
+
+Slider* ChowAudioProcessorEditor::getSliderForParam (AudioParameterFloat* param)
+{
+    if (processor.threshDB->name == param->name)
+        return &threshSlide;
+    else if (processor.ratio->name == param->name)
+        return &ratioSlide;
+    else if (processor.inGainDB->name == param->name)
+        return &inGainSlide;
+    else if (processor.outGainDB->name == param->name)
+        return &outGainSlide;
+    else
+        return nullptr;
+}
+
+Button* ChowAudioProcessorEditor::getButtonForParam (AudioParameterBool* param)
+{
+    if (processor.rect->name == param->name)
+        return &rectButton;
+    else if (processor.flip->name == param->name)
+        return &flipButton;
     else
         return nullptr;
 }

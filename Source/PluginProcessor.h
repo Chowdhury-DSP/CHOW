@@ -15,7 +15,8 @@
 //==============================================================================
 /**
 */
-class ChowAudioProcessor  : public AudioProcessor
+class ChowAudioProcessor : public AudioProcessor,
+                           private AudioProcessorParameter::Listener
 {
 public:
     //==============================================================================
@@ -56,6 +57,9 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
+    void parameterValueChanged (int paramIndex, float /*newValue*/) override;
+    void parameterGestureChanged (int /*paramIndex*/, bool /*gestureIsStarting*/) override {}
+
     AudioParameterFloat* threshDB;
     AudioParameterFloat* ratio;
     AudioParameterFloat* inGainDB;
@@ -70,6 +74,8 @@ public:
     std::unique_ptr<AudioVisualiserComponent> vis;
 
 private:
+    int programNum = 0;
+
     float chow (float x);
 
     //==============================================================================
