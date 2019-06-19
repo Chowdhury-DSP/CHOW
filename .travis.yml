@@ -45,6 +45,25 @@ script:
   - if [[ $TRAVIS_OS_NAME == 'windows' ]]; then msbuild.exe -v:normal CHOW.sln; fi
   - echo "SUCCESS"
 
+after_success:
+- |
+  if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    echo "Validating plugin"
+    cd $TRAVIS_BUILD_DIR/
+    curl -L "https://github.com/Tracktion/pluginval/releases/download/latest_release/pluginval_macOS.zip" -o pluginval.zip
+    unzip pluginval
+    pluginval.app/Contents/MacOS/pluginval --strictness-level 8 --validate-in-process --validate "$TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3" || exit 1
+    pluginval.app/Contents/MacOS/pluginval --strictness-level 8 --validate-in-process --validate "$TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component" || exit 1
+  fi
+- |
+  if [[ $TRAVIS_OS_NAME == 'windows' ]]; then
+    echo "Validating plugin"
+    cd $TRAVIS_BUILD_DIR/
+    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/Tracktion/pluginval/releases/download/latest_release/pluginval_Windows.zip -OutFile pluginval.zip"
+    powershell -Command "Expand-Archive pluginval.zip -DestinationPath ."
+    ./pluginval.exe --strictness-level 8 --validate-in-process --validate "$TRAVIS_BUILD_DIR/Builds/VisualStudio2017/x64/Debug/VST3/CHOW.vst3"
+  fi
+
 # after_success: # upload mac bins
 #   - |
 #     if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
