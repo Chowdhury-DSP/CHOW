@@ -62,7 +62,7 @@ void ChowAudioProcessor::parameterValueChanged (int paramIndex, float /*newValue
         if (floatParam != nullptr)
         {
             if (Slider* slider = editor->getSliderForParam (floatParam))
-                slider->setValue (dynamic_cast<AudioParameterFloat*> (getParameters()[paramIndex])->get());
+                slider->setValue (dynamic_cast<AudioParameterFloat*> (getParameters()[paramIndex])->get(), dontSendNotification);
             return;
         }
 
