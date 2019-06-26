@@ -64,28 +64,32 @@ after_success:
     ./pluginval.exe --strictness-level 8 --validate-in-process --validate "$TRAVIS_BUILD_DIR/Builds/VisualStudio2017/x64/Debug/VST3/CHOW.vst3"
   fi
 
-# after_success: # upload mac bins
-#   - |
-#     if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
-#       echo "Copying Files..."
-#       cd $TRAVIS_BUILD_DIR/
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.app
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.component
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst
-#       cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/CHOW.vst3
-# 
-#       echo "Setting Up Git..."
-#       git config --global user.email "travis@travis-ci.org"
-#       git config --global user.name "Travis CI"
-# 
-#       echo "Committing Files..."
-#       git checkout -b builds
-#       git add Bin/Mac/
-#       git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
-# 
-#       echo "Pushing to branch..."
-#       git push https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git
-#     fi
+after_success: # upload mac bins
+  - |
+    if [[ $TRAVIS_OS_NAME == 'osx' && type != push ]]; then
+      echo "Copying Files..."
+      cd $TRAVIS_BUILD_DIR/Bin/Mac
+      rm travis_builds.zip
+      mkdir travis_builds
+      cp -R $TRAVIS_BUILD_DIR/Builds/MacOSX/build/Release/CHOW.app $TRAVIS_BUILD_DIR/Bin/Mac/travis_builds/CHOW.app
+      cp -R /Users/travis/Library/Audio/Plug-Ins/Components/CHOW.component $TRAVIS_BUILD_DIR/Bin/Mac/travis_builds/CHOW.component
+      cp -R /Users/travis/Library/Audio/Plug-Ins/VST/CHOW.vst $TRAVIS_BUILD_DIR/Bin/Mac/travis_builds/CHOW.vst
+      cp -R /Users/travis/Library/Audio/Plug-Ins/VST3/CHOW.vst3 $TRAVIS_BUILD_DIR/Bin/Mac/travis_builds/CHOW.vst3
+      zip -r travis_builds.zip travis_builds
+
+      echo "Setting Up Git..."
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI"
+
+      echo "Committing Files..."
+      cd $TRAVIS_BUILD_DIR/
+      git checkout -b mac
+      git add Bin/Mac/travis_builds.zip
+      git commit -m "Travis build- $TRAVIS_BUILD_NUMBER"
+
+      echo "Pushing to branch..."
+      git push https://${GH_TOKEN}@github.com/jatinchowdhury18/CHOW.git -f
+    fi
 
 env:
   global:
